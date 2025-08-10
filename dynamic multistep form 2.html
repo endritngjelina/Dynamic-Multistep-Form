@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Career Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #1c1c1e, #2c2c2e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .apple-logo {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .progress-container {
+            padding: 20px 30px;
+            background: white;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #5856D6);
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .step-indicators {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #8e8e93;
+            transition: color 0.3s ease;
+        }
+
+        .step-indicator.active {
+            color: #007AFF;
+            font-weight: 600;
+        }
+
+        .step-indicator.completed {
+            color: #34C759;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d1d6;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active .step-dot {
+            background: #007AFF;
+            transform: scale(1.2);
+        }
+
+        .step-indicator.completed .step-dot {
+            background: #34C759;
+        }
+
+        .form-content {
+            padding: 0 30px 30px;
+        }
+
+        .form-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .form-step.slide-out {
+            transform: translateX(-20px);
+            opacity: 0;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1c1c1e;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #8e8e93;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1c1c1e;
+            margin-bottom: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e5ea;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        input.error, select.error, textarea.error {
+            border-color: #FF3B30;
+            background: rgba(255, 59, 48, 0.05);
+        }
+
+        input.success, select.success, textarea.success {
+            border-color: #34C759;
+            background: rgba(52, 199, 89, 0.05);
+        }
+
+        .error-message {
+            font-size: 13px;
+            color: #FF3B30;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            font-size: 13px;
+            color: #34C759;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #f2f2f7;
+            color: #1c1c1e;
+            min-width: 80px;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5ea;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .review-section {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1c1c1e;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .review-label {
+            color: #8e8e93;
+            font-weight: 500;
+        }
+
+        .review-value {
+            color: #1c1c1e;
+            font-weight: 500;
+        }
+
+        .edit-link {
+            color: #007AFF;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .edit-link:hover {
+            text-decoration: underline;
+        }
+
+        .file-upload {
+            border: 2px dashed #e5e5ea;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.02);
+        }
+
+        .file-upload.dragover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        .file-upload-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #8e8e93;
+        }
+
+        .file-upload-text {
+            font-size: 16px;
+            color: #1c1c1e;
+            margin-bottom: 4px;
+        }
+
+        .file-upload-hint {
+            font-size: 13px;
+            color: #8e8e93;
+        }
+
+        .uploaded-files {
+            margin-top: 15px;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f2f2f7;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            background: #007AFF;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .file-details {
+            font-size: 14px;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #1c1c1e;
+        }
+
+        .file-size {
+            color: #8e8e93;
+            font-size: 12px;
+        }
+
+        .remove-file {
+            color: #FF3B30;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #34C759;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: white;
+            animation: successBounce 0.6s ease-out;
+        }
+
+        @keyframes successBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            font-size: 14px;
+            color: #8e8e93;
+        }
+
+        .typing-indicator::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+
+            .form-header {
+                padding: 20px;
+            }
+
+            .progress-container {
+                padding: 15px 20px;
+            }
+
+            .form-content {
+                padding: 0 20px 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .step-indicators {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <div class="apple-logo">🍎</div>
+            <h1 class="form-title">Join Apple</h1>
+            <p class="form-subtitle">Your journey to innovation starts here</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="step-indicators">
+                <div class="step-indicator active" data-step="1">
+                    <div class="step-dot"></div>
+                    <span>Personal</span>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    <div class="step-dot"></div>
+                    <span>Experience</span>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    <div class="step-dot"></div>
+                    <span>Portfolio</span>
+                </div>
+                <div class="step-indicator" data-step="4">
+                    <div class="step-dot"></div>
+                    <span>Review</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="form-content">
+            <form id="multiStepForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="step-title">Personal Information</h2>
+                    <p class="step-description">Tell us about yourself and help us get to know you better.</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message"></div>
+                        <div class="success-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="us">United States</option>
+                                <option value="ca">Canada</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="de">Germany</option>
+                                <option value="fr">France</option>
+                                <option value="jp">Japan</option>
+                                <option value="au">Australia</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Professional Experience -->
+                <div class="form-step" data-step="2">
+                    <h2 class="step-title">Professional Experience</h2>
+                    <p class="step-description">Share your professional background and what role interests you.</p>
+
+                    <div class="form-group">
+                        <label for="position">Desired Position *</label>
+                        <select id="position" name="position" required>
+                            <option value="">Select Position</option>
+                            <option value="software-engineer">Software Engineer</option>
+                            <option value="product-manager">Product Manager</option>
+                            <option value="ui-designer">UI/UX Designer</option>
+                            <option value="data-scientist">Data Scientist</option>
+                            <option value="marketing">Marketing Specialist</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Years of Experience *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select Experience</option>
+                            <option value="0-1">0-1 years</option>
+                            <option value="2-5">2-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentCompany">Current Company</label>
+                        <input type="text" id="currentCompany" name="currentCompany">
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skills">Technical Skills *</label>
+                        <textarea id="skills" name="skills" rows="3" placeholder="List your key technical skills, programming languages, frameworks, etc." required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motivation">Why do you want to work at Apple? *</label>
+                        <textarea id="motivation" name="motivation" rows="4" placeholder="Tell us what motivates you to join our team..." required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            ← Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Portfolio & Documents -->
+                <div class="form-step" data-step="3">
+                    <h2 class="step-title">Portfolio & Documents</h2>
+                    <p class="step-description">Upload your resume and any relevant portfolio items.</p>
+
+                    <div class="form-group">
+                        <label>Resume/CV *</label>
+                        <div class="file-upload" onclick="document.getElementById('resume').click()">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">Upload your resume</div>
+                            <div class="file-upload-hint">PDF, DOC, or DOCX (max 5MB)</div>
+                        </div>
+                        <input type="file" id="resume" accept=".pdf,.doc,.docx" style="display: none;">
+                        <div class="uploaded-files" id="resumeFiles"></div>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Portfolio (Optional)</label>
+                        <div class="file-upload" onclick="document.getElementById('portfolio').click()">
+                            <div class="file-upload-icon">🎨</div>
+                            <div class="file-upload-text">Upload portfolio files</div>
+                            <div class="file-upload-hint">Images, PDFs, or documents (max 10MB each)</div>
+                        </div>
+                        <input type="file" id="portfolio" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.doc,.docx" style="display: none;">
+                        <div class="uploaded-files" id="portfolioFiles"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portfolioUrl">Portfolio URL (Optional)</label>
+                        <input type="url" id="portfolioUrl" name="portfolioUrl" placeholder="https://your-portfolio.com">
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkedIn">LinkedIn Profile (Optional)</label>
+                        <input type="url" id="linkedIn" name="linkedIn" placeholder="https://linkedin.com/in/yourprofile">
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            ← Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review & Submit -->
+                <div class="form-step" data-step="4">
+                    <h2 class="step-title">Review Your Application</h2>
+                    <p class="step-description">Please review all information before submitting your application.</p>
+
+                    <div class="review-section">
+                        <div class="review-title">Personal Information <a href="#" class="edit-link" onclick="goToStep(1)">Edit</a></div>
+                        <div class="review-item">
+                            <span class="review-label">Name:</span>
+                            <span class="review-value" id="reviewName"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Email:</span>
+                            <span class="review-value" id="reviewEmail"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Phone:</span>
+                            <span class="review-value" id="reviewPhone"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Location:</span>
+                            <span class="review-value" id="reviewLocation"></span>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <div class="review-title">Professional Experience <a href="#" class="edit-link" onclick="goToStep(2)">Edit</a></div>
+                        <div class="review-item">
+                            <span class="review-label">Position:</span>
+                            <span class="review-value" id="reviewPosition"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Experience:</span>
+                            <span class="review-value" id="reviewExperience"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Current Company:</span>
+                            <span class="review-value" id="reviewCompany"></span>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <div class="review-title">Documents <a href="#" class="edit-link" onclick="goToStep(3)">Edit</a></div>
+                        <div class="review-item">
+                            <span class="review-label">Resume:</span>
+                            <span class="review-value" id="reviewResume"></span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Portfolio:</span>
+                            <span class="review-value" id="reviewPortfolio"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep()">
+                            ← Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">
+                            Submit Application
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Success Step -->
+                <div class="form-step" data-step="5">
+                    <div class="success-animation">
+                        <div class="success-icon">✓</div>
+                        <h2 class="step-title">Application Submitted!</h2>
+                        <p class="step-description">Thank you for your interest in joining Apple. We'll review your application and get back to you within 2-3 business days.</p>
+                        <div style="margin-top: 20px;">
+                            <span class="typing-indicator">Generating confirmation email</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form state management
+        let currentStep = 1;
+        const totalSteps = 4;
+        let formData = {};
+        let uploadedFiles = {
+            resume: null,
+            portfolio: []
+        };
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            setupFileUploads();
+            setupRealTimeValidation();
+        });
+
+        // Step navigation
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    saveCurrentStepData();
+                    currentStep++;
+                    showStep(currentStep);
+                    updateProgress();
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgress();
+            }
+        }
+
+        function goToStep(step) {
+            if (step >= 1 && step <= totalSteps) {
+                currentStep = step;
+                showStep(currentStep);
+                updateProgress();
+            }
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+                stepEl.classList.add('slide-out');
+            });
+
+            // Show current step with animation
+            setTimeout(() => {
+                document.querySelectorAll('.form-step').forEach(stepEl => {
+                    stepEl.classList.remove('slide-out');
+                });
+                
+                const currentStepEl = document.querySelector(`[data-step="${step}"]`);
+                currentStepEl.classList.add('active');
+            }, 200);
+
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                const stepNum = index + 1;
+                indicator.classList.remove('active', 'completed');
+                
+                if (stepNum === step) {
+                    indicator.classList.add('active');
+                } else if (stepNum < step) {
+                    indicator.classList.add('completed');
+                }
+            });
+        }
+
+        function updateProgress() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.querySelector('.progress-fill').style.width = progressPercentage + '%';
+        }
+
+        // Form validation
+        function validateCurrentStep() {
+            const currentStepEl = document.querySelector(`[data-step="${currentStep}"]`);
+            const requiredFields = currentStepEl.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
+
+            // Special validation for step 3 (resume required)
+            if (currentStep === 3 && !uploadedFiles.resume) {
+                showError(document.getElementById('resume'), 'Resume is required');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldName = field.name;
+            let isValid = true;
+            let errorMessage = '';
+
+            // Clear previous validation states
+            clearFieldValidation(field);
+
+            // Required field validation
+            if (field.required && !value) {
+                errorMessage = `${field.labels[0].textContent.replace(' *', '')} is required`;
+                isValid = false;
+            }
+
+            // Email validation
+            if (fieldName === 'email' && value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    errorMessage = 'Please enter a valid email address';
+                    isValid = false;
+                } else {
+                    showSuccess(field, 'Valid email address');
+                }
+            }
+
+            // Phone validation
+            if (fieldName === 'phone' && value) {
+                const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+                if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                    errorMessage = 'Please enter a valid phone number';
+                    isValid = false;
+                }
+            }
+
+            // URL validation
+            if ((fieldName === 'portfolioUrl' || fieldName === 'linkedIn') && value) {
+                try {
+                    new URL(value);
+                } catch {
+                    errorMessage = 'Please enter a valid URL';
+                    isValid = false;
+                }
+            }
+
+            // Name validation
+            if ((fieldName === 'firstName' || fieldName === 'lastName') && value) {
+                if (value.length < 2) {
+                    errorMessage = 'Name must be at least 2 characters long';
+                    isValid = false;
+                }
+            }
+
+            // Textarea validation
+            if (field.tagName === 'TEXTAREA' && value) {
+                if (value.length < 20) {
+                    errorMessage = 'Please provide more detailed information (at least 20 characters)';
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                showError(field, errorMessage);
+            }
+
+            return isValid;
+        }
+
+        function showError(field, message) {
+            field.classList.add('error');
+            field.classList.remove('success');
+            const errorEl = field.parentNode.querySelector('.error-message');
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function showSuccess(field, message) {
+            field.classList.add('success');
+            field.classList.remove('error');
+            const successEl = field.parentNode.querySelector('.success-message');
+            if (successEl) {
+                successEl.textContent = message;
+                successEl.style.display = 'block';
+            }
+        }
+
+        function clearFieldValidation(field) {
+            field.classList.remove('error', 'success');
+            const errorEl = field.parentNode.querySelector('.error-message');
+            const successEl = field.parentNode.querySelector('.success-message');
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+            if (successEl) {
+                successEl.style.display = 'none';
+            }
+        }
+
+        // Real-time validation setup
+        function setupRealTimeValidation() {
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('error')) {
+                        validateField(input);
+                    }
+                });
+            });
+        }
+
+        // Form data management
+        function saveCurrentStepData() {
+            const currentStepEl = document.querySelector(`[data-step="${currentStep}"]`);
+            const fields = currentStepEl.querySelectorAll('input, select, textarea');
+            
+            fields.forEach(field => {
+                if (field.type !== 'file') {
+                    formData[field.name] = field.value;
+                }
+            });
+        }
+
+        // File upload handling
+        function setupFileUploads() {
+            const resumeInput = document.getElementById('resume');
+            const portfolioInput = document.getElementById('portfolio');
+
+            resumeInput.addEventListener('change', (e) => handleFileUpload(e, 'resume'));
+            portfolioInput.addEventListener('change', (e) => handleFileUpload(e, 'portfolio'));
+
+            // Drag and drop functionality
+            setupDragAndDrop();
+        }
+
+        function handleFileUpload(event, type) {
+            const files = Array.from(event.target.files);
+            
+            files.forEach(file => {
+                if (validateFile(file, type)) {
+                    if (type === 'resume') {
+                        uploadedFiles.resume = file;
+                        displayUploadedFile(file, 'resumeFiles', type);
+                    } else {
+                        uploadedFiles.portfolio.push(file);
+                        displayUploadedFile(file, 'portfolioFiles', type);
+                    }
+                }
+            });
+        }
+
+        function validateFile(file, type) {
+            const maxSize = type === 'resume' ? 5 * 1024 * 1024 : 10 * 1024 * 1024; // 5MB for resume, 10MB for portfolio
+            
+            if (file.size > maxSize) {
+                alert(`File size too large. Maximum size is ${maxSize / (1024 * 1024)}MB`);
+                return false;
+            }
+
+            const allowedTypes = type === 'resume' 
+                ? ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+                : ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+            if (!allowedTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload the correct file format.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function displayUploadedFile(file, containerId, type) {
+            const container = document.getElementById(containerId);
+            if (type === 'resume') {
+                container.innerHTML = ''; // Clear previous resume
+            }
+
+            const fileElement = document.createElement('div');
+            fileElement.className = 'uploaded-file';
+            fileElement.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">${getFileIcon(file.type)}</div>
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                </div>
+                <div class="remove-file" onclick="removeFile('${file.name}', '${type}', this)">×</div>
+            `;
+            container.appendChild(fileElement);
+        }
+
+        function getFileIcon(mimeType) {
+            if (mimeType.includes('pdf')) return '📄';
+            if (mimeType.includes('image')) return '🖼️';
+            if (mimeType.includes('word')) return '📝';
+            return '📎';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(fileName, type, element) {
+            if (type === 'resume') {
+                uploadedFiles.resume = null;
+            } else {
+                uploadedFiles.portfolio = uploadedFiles.portfolio.filter(file => file.name !== fileName);
+            }
+            element.parentNode.remove();
+        }
+
+        function setupDragAndDrop() {
+            const fileUploads = document.querySelectorAll('.file-upload');
+            
+            fileUploads.forEach(upload => {
+                upload.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    upload.classList.add('dragover');
+                });
+
+                upload.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    upload.classList.remove('dragover');
+                });
+
+                upload.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    upload.classList.remove('dragover');
+                    
+                    const files = Array.from(e.dataTransfer.files);
+                    const input = upload.parentNode.querySelector('input[type="file"]');
+                    const type = input.id;
+                    
+                    files.forEach(file => {
+                        if (validateFile(file, type)) {
+                            if (type === 'resume') {
+                                uploadedFiles.resume = file;
+                                displayUploadedFile(file, 'resumeFiles', type);
+                            } else {
+                                uploadedFiles.portfolio.push(file);
+                                displayUploadedFile(file, 'portfolioFiles', type);
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        // Review step population
+        function populateReviewStep() {
+            document.getElementById('reviewName').textContent = `${formData.firstName || ''} ${formData.lastName || ''}`;
+            document.getElementById('reviewEmail').textContent = formData.email || '';
+            document.getElementById('reviewPhone').textContent = formData.phone || '';
+            document.getElementById('reviewLocation').textContent = `${formData.city || ''}, ${getCountryName(formData.country) || ''}`;
+            document.getElementById('reviewPosition').textContent = getPositionName(formData.position) || '';
+            document.getElementById('reviewExperience').textContent = formData.experience || '';
+            document.getElementById('reviewCompany').textContent = formData.currentCompany || 'Not specified';
+            document.getElementById('reviewResume').textContent = uploadedFiles.resume ? uploadedFiles.resume.name : 'Not uploaded';
+            document.getElementById('reviewPortfolio').textContent = uploadedFiles.portfolio.length > 0 ? `${uploadedFiles.portfolio.length} file(s)` : 'None';
+        }
+
+        function getCountryName(countryCode) {
+            const countries = {
+                'us': 'United States',
+                'ca': 'Canada',
+                'uk': 'United Kingdom',
+                'de': 'Germany',
+                'fr': 'France',
+                'jp': 'Japan',
+                'au': 'Australia',
+                'other': 'Other'
+            };
+            return countries[countryCode] || '';
+        }
+
+        function getPositionName(positionCode) {
+            const positions = {
+                'software-engineer': 'Software Engineer',
+                'product-manager': 'Product Manager',
+                'ui-designer': 'UI/UX Designer',
+                'data-scientist': 'Data Scientist',
+                'marketing': 'Marketing Specialist',
+                'other': 'Other'
+            };
+            return positions[positionCode] || '';
+        }
+
+        // Form submission
+        function submitForm() {
+            saveCurrentStepData();
+            populateReviewStep();
+            
+            // Simulate form submission
+            const submitButton = document.querySelector('.btn-primary');
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Submitting...';
+            
+            setTimeout(() => {
+                currentStep = 5;
+                showStep(currentStep);
+                updateProgress();
+                
+                // Simulate typing effect
+                setTimeout(() => {
+                    document.querySelector('.typing-indicator').innerHTML = 'Confirmation email sent to ' + formData.email;
+                }, 2000);
+            }, 2000);
+        }
+
+        // Enhanced UX features
+        function addFormEnhancements() {
+            // Auto-format phone number
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+                } else if (value.length >= 3) {
+                    value = value.replace(/(\d{3})(\d{1,3})/, '($1) $2');
+                }
+                e.target.value = value;
+            });
+
+            // Auto-capitalize names
+            const nameInputs = document.querySelectorAll('#firstName, #lastName');
+            nameInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/\b\w/g, c => c.toUpperCase());
+                });
+            });
+
+            // Character counter for textareas
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                const counter = document.createElement('div');
+                counter.style.cssText = 'font-size: 12px; color: #8e8e93; text-align: right; margin-top: 5px;';
+                textarea.parentNode.appendChild(counter);
+                
+                textarea.addEventListener('input', () => {
+                    counter.textContent = `${textarea.value.length} characters`;
+                });
+            });
+        }
+
+        // Advanced validation patterns
+        function setupAdvancedValidation() {
+            // Email domain suggestions
+            const emailInput = document.getElementById('email');
+            const commonDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'apple.com'];
+            
+            emailInput.addEventListener('input', (e) => {
+                const value = e.target.value;
+                const atIndex = value.indexOf('@');
+                
+                if (atIndex > 0 && value.length > atIndex + 1) {
+                    const domain = value.substring(atIndex + 1);
+                    const suggestions = commonDomains.filter(d => d.startsWith(domain));
+                    
+                    if (suggestions.length > 0 && suggestions[0] !== domain) {
+                        // Could implement autocomplete dropdown here
+                    }
+                }
+            });
+
+            // Password strength indicator (if we had a password field)
+            // Skills validation
+            const skillsInput = document.getElementById('skills');
+            skillsInput.addEventListener('input', (e) => {
+                const skills = e.target.value.toLowerCase();
+                const appleRelevantSkills = ['swift', 'objective-c', 'ios', 'macos', 'xcode', 'metal', 'core data'];
+                const foundSkills = appleRelevantSkills.filter(skill => skills.includes(skill));
+                
+                if (foundSkills.length > 0) {
+                    showSuccess(skillsInput, `Great! You mentioned ${foundSkills.length} Apple-relevant skill(s)`);
+                }
+            });
+        }
+
+        // Accessibility enhancements
+        function setupAccessibility() {
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key) {
+                        case 'ArrowRight':
+                            e.preventDefault();
+                            if (currentStep < totalSteps) nextStep();
+                            break;
+                        case 'ArrowLeft':
+                            e.preventDefault();
+                            if (currentStep > 1) prevStep();
+                            break;
+                    }
+                }
+            });
+
+            // Focus management
+            document.querySelectorAll('.form-step').forEach(step => {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach(mutation => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            if (step.classList.contains('active')) {
+                                const firstInput = step.querySelector('input, select, textarea');
+                                if (firstInput) {
+                                    setTimeout(() => firstInput.focus(), 300);
+                                }
+                            }
+                        }
+                    });
+                });
+                observer.observe(step, { attributes: true });
+            });
+        }
+
+        // Performance optimizations
+        function setupPerformanceOptimizations() {
+            // Debounced validation
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Apply debounced validation to prevent excessive API calls
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                const debouncedValidation = debounce(() => validateField(input), 300);
+                input.addEventListener('input', debouncedValidation);
+            });
+        }
+
+        // Initialize all enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            addFormEnhancements();
+            setupAdvancedValidation();
+            setupAccessibility();
+            setupPerformanceOptimizations();
+            
+            // Add loading states
+            const buttons = document.querySelectorAll('.btn-primary');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.textContent.includes('Continue') || button.textContent.includes('Submit')) {
+                        button.style.position = 'relative';
+                        button.style.overflow = 'hidden';
+                    }
+                });
+            });
+        });
+
+        // Auto-save functionality
+        function setupAutoSave() {
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    saveCurrentStepData();
+                    // In a real application, this would save to localStorage or send to server
+                    console.log('Auto-saved:', formData);
+                });
+            });
+        }
+
+        // Initialize auto-save
+        setupAutoSave();
