@@ -101,5 +101,5 @@ Even with MIT, I kindly ask: please request permission before reusing or republi
 
 📫 Contact
 
-Questions or permission requests? Open an issue or reach out: [add your preferred contact here].
+Questions or permission requests? Open an issue or reach out.
 
