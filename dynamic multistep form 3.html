@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Recruitment Portal - Application Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,0 1000,0 1000,100 0,80"/></svg>');
+            background-size: cover;
+        }
+
+        .form-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .step-circle.active {
+            background: #1877f2;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step-circle.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-title {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .step-title.active {
+            color: #1877f2;
+            font-weight: 600;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            right: -50%;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .progress-line.completed {
+            background: #28a745;
+        }
+
+        .progress-step:last-child .progress-line {
+            display: none;
+        }
+
+        .overall-progress {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .overall-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1877f2, #42a5f5);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-title-main {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.1);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .input-error {
+            border-color: #dc3545 !important;
+        }
+
+        .input-success {
+            border-color: #28a745 !important;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .skill-tag:hover {
+            background: #bbdefb;
+        }
+
+        .skill-tag.selected {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #1877f2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #166fe5;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .review-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .review-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .review-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #1877f2;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: underline;
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            color: #28a745;
+            margin-bottom: 20px;
+            animation: bounceIn 1s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px dashed #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #1877f2;
+            background: #e3f2fd;
+        }
+
+        .file-upload-label.has-file {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 10px;
+            }
+            
+            .form-header h1 {
+                font-size: 2em;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .progress-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .progress-step {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .step-title {
+                margin-top: 0;
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fab fa-meta"></i> Meta Careers</h1>
+            <p>Join the team that's building the future of social technology</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-step" data-step="1">
+                    <div class="step-circle active">1</div>
+                    <div class="step-title active">Personal Info</div>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Professional Details</div>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Skills & Experience</div>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Documents</div>
+                    <div class="progress-line"></div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <div class="step-title">Review & Submit</div>
+                </div>
+            </div>
+            <div class="overall-progress">
+                <div class="overall-progress-fill" style="width: 20%"></div>
+            </div>
+        </div>
+
+        <div class="form-content">
+            <form id="multiStepForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="step-title-main">Personal Information</h2>
+                    <p class="step-description">Let's start with your basic information. All fields marked with * are required.</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required>
+                            <div class="error-message" id="firstName-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required>
+                            <div class="error-message" id="lastName-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <input type="email" id="email" name="email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <input type="tel" id="phone" name="phone" required>
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth">
+                            <div class="error-message" id="dateOfBirth-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address <span class="required">*</span></label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                        <div class="error-message" id="address-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" required>
+                            <div class="error-message" id="city-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country <span class="required">*</span></label>
+                            <select id="country" name="country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IN">India</option>
+                                <option value="AU">Australia</option>
+                                <option value="SG">Singapore</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <div class="error-message" id="country-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Professional Details -->
+                <div class="form-step" data-step="2">
+                    <h2 class="step-title-main">Professional Details</h2>
+                    <p class="step-description">Tell us about your professional background and current situation.</p>
+
+                    <div class="form-group">
+                        <label for="currentPosition">Current Position</label>
+                        <input type="text" id="currentPosition" name="currentPosition">
+                        <div class="error-message" id="currentPosition-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentCompany">Current Company</label>
+                        <input type="text" id="currentCompany" name="currentCompany">
+                        <div class="error-message" id="currentCompany-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experienceLevel">Experience Level <span class="required">*</span></label>
+                            <select id="experienceLevel" name="experienceLevel" required>
+                                <option value="">Select Experience Level</option>
+                                <option value="entry">Entry Level (0-2 years)</option>
+                                <option value="mid">Mid Level (3-5 years)</option>
+                                <option value="senior">Senior Level (6-10 years)</option>
+                                <option value="lead">Lead/Principal (10+ years)</option>
+                            </select>
+                            <div class="error-message" id="experienceLevel-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="expectedSalary">Expected Salary (USD)</label>
+                            <div class="input-with-icon">
+                                <input type="number" id="expectedSalary" name="expectedSalary" min="0">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="error-message" id="expectedSalary-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredRole">Preferred Role <span class="required">*</span></label>
+                        <select id="preferredRole" name="preferredRole" required>
+                            <option value="">Select Preferred Role</option>
+                            <option value="software-engineer">Software Engineer</option>
+                            <option value="frontend-engineer">Frontend Engineer</option>
+                            <option value="backend-engineer">Backend Engineer</option>
+                            <option value="full-stack-engineer">Full Stack Engineer</option>
+                            <option value="data-scientist">Data Scientist</option>
+                            <option value="ml-engineer">ML Engineer</option>
+                            <option value="product-manager">Product Manager</option>
+                            <option value="designer">Designer</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message" id="preferredRole-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motivation">Why do you want to work at Meta? <span class="required">*</span></label>
+                        <textarea id="motivation" name="motivation" rows="4" required placeholder="Tell us what excites you about Meta and how you can contribute to our mission..."></textarea>
+                        <div class="error-message" id="motivation-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Availability <span class="required">*</span></label>
+                        <select id="availability" name="availability" required>
+                            <option value="">Select Availability</option>
+                            <option value="immediate">Immediate</option>
+                            <option value="2-weeks">2 Weeks Notice</option>
+                            <option value="1-month">1 Month Notice</option>
+                            <option value="2-months">2 Months Notice</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message" id="availability-error"></div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Skills & Experience -->
+                <div class="form-step" data-step="3">
+                    <h2 class="step-title-main">Skills & Experience</h2>
+                    <p class="step-description">Showcase your technical skills and relevant experience.</p>
+
+                    <div class="form-group">
+                        <label>Technical Skills <span class="required">*</span></label>
+                        <p style="font-size: 0.9em; color: #6c757d; margin-bottom: 10px;">Select all that apply:</p>
+                        <div class="skill-tags" id="skillTags">
+                            <div class="skill-tag" data-skill="javascript">JavaScript</div>
+                            <div class="skill-tag" data-skill="python">Python</div>
+                            <div class="skill-tag" data-skill="java">Java</div>
+                            <div class="skill-tag" data-skill="cpp">C++</div>
+                            <div class="skill-tag" data-skill="react">React</div>
+                            <div class="skill-tag" data-skill="nodejs">Node.js</div>
+                            <div class="skill-tag" data-skill="django">Django</div>
+                            <div class="skill-tag" data-skill="flask">Flask</div>
+                            <div class="skill-tag" data-skill="sql">SQL</div>
+                            <div class="skill-tag" data-skill="mongodb">MongoDB</div>
+                            <div class="skill-tag" data-skill="aws">AWS</div>
+                            <div class="skill-tag" data-skill="docker">Docker</div>
+                            <div class="skill-tag" data-skill="kubernetes">Kubernetes</div>
+                            <div class="skill-tag" data-skill="git">Git</div>
+                            <div class="skill-tag" data-skill="machine-learning">Machine Learning</div>
+                            <div class="skill-tag" data-skill="deep-learning">Deep Learning</div>
+                        </div>
+                        <input type="hidden" id="selectedSkills" name="selectedSkills">
+                        <div class="error-message" id="selectedSkills-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portfolioUrl">Portfolio/GitHub URL</label>
+                        <div class="input-with-icon">
+                            <input type="url" id="portfolioUrl" name="portfolioUrl" placeholder="https://github.com/yourusername">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="error-message" id="portfolioUrl-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkedinUrl">LinkedIn Profile</label>
+                        <div class="input-with-icon">
+                            <input type="url" id="linkedinUrl" name="linkedinUrl" placeholder="https://linkedin.com/in/yourprofile">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div class="error-message" id="linkedinUrl-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="achievements">Notable Achievements</label>
+                        <textarea id="achievements" name="achievements" rows="4" placeholder="Describe any notable projects, awards, or achievements..."></textarea>
+                        <div class="error-message" id="achievements-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="languages">Languages Spoken</label>
+                        <input type="text" id="languages" name="languages" placeholder="e.g., English (Native), Spanish (Fluent), French (Intermediate)">
+                        <div class="error-message" id="languages-error"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Documents -->
+                <div class="form-step" data-step="4">
+                    <h2 class="step-title-main">Documents</h2>
+                    <p class="step-description">Upload your resume and any additional documents.</p>
+
+                    <div class="form-group">
+                        <label for="resume">Resume/CV <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                            <label for="resume" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 1.5em;"></i>
+                                <span>Click to upload your resume (PDF, DOC, DOCX)</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="resume-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coverLetter">Cover Letter</label>
+                        <div class="file-upload">
+                            <input type="file" id="coverLetter" name="coverLetter" accept=".pdf,.doc,.docx">
+                            <label for="coverLetter" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 1.5em;"></i>
+                                <span>Click to upload your cover letter (Optional)</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="coverLetter-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalDocs">Additional Documents</label>
+                        <div class="file-upload">
+                            <input type="file" id="additionalDocs" name="additionalDocs" accept=".pdf,.doc,.docx" multiple>
+                            <label for="additionalDocs" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt" style="margin-right: 10px; font-size: 1.5em;"></i>
+                                <span>Click to upload additional documents (Optional)</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="additionalDocs-error"></div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms">I agree to the <a href="#" style="color: #1877f2;">Terms of Service</a> and <a href="#" style="color: #1877f2;">Privacy Policy</a> <span class="required">*</span></label>
+                    </div>
+                    <div class="error-message" id="agreeTerms-error"></div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="marketingConsent" name="marketingConsent">
+                        <label for="marketingConsent">I agree to receive marketing communications from Meta about job opportunities and company updates</label>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review & Submit -->
+                <div class="form-step" data-step="5">
+                    <h2 class="step-title-main">Review & Submit</h2>
+                    <p class="step-description">Please review your information before submitting your application.</p>
+
+                    <div class="review-section">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <div class="review-item">
+                            <span class="review-label">Name:</span>
+                            <span class="review-value" id="review-name"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(1)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Phone:</span>
+                            <span class="review-value" id="review-phone"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(1)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Location:</span>
+                            <span class="review-value" id="review-location"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(1)">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <h3><i class="fas fa-briefcase"></i> Professional Details</h3>
+                        <div class="review-item">
+                            <span class="review-label">Experience Level:</span>
+                            <span class="review-value" id="review-experience"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(2)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Preferred Role:</span>
+                            <span class="review-value" id="review-role"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(2)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Current Position:</span>
+                            <span class="review-value" id="review-position"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(2)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Availability:</span>
+                            <span class="review-value" id="review-availability"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(2)">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <h3><i class="fas fa-code"></i> Skills & Experience</h3>
+                        <div class="review-item">
+                            <span class="review-label">Technical Skills:</span>
+                            <span class="review-value" id="review-skills"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(3)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Portfolio:</span>
+                            <span class="review-value" id="review-portfolio"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(3)">Edit</button>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <h3><i class="fas fa-file-alt"></i> Documents</h3>
+                        <div class="review-item">
+                            <span class="review-label">Resume:</span>
+                            <span class="review-value" id="review-resume"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(4)">Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Cover Letter:</span>
+                            <span class="review-value" id="review-cover-letter"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(4)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Step -->
+                <div class="form-step" data-step="success">
+                    <div class="success-animation">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2 class="step-title-main">Application Submitted Successfully!</h2>
+                        <p class="step-description">
+                            Thank you for applying to Meta! We've received your application and will review it carefully. 
+                            You'll hear from our recruiting team within 2-3 business days.
+                        </p>
+                        <div style="margin-top: 30px;">
+                            <p><strong>Application ID:</strong> <span id="applicationId"></span></p>
+                            <p><strong>Submitted:</strong> <span id="submissionDate"></span></p>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <button type="button" class="btn btn-primary" onclick="window.print()">
+                                <i class="fas fa-print"></i> Print Confirmation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <div>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                            <i class="fas fa-paper-plane"></i> Submit Application
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        let formData = {};
+        let selectedSkills = [];
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressBar();
+            setupEventListeners();
+            setupSkillSelection();
+            setupFileUploads();
+        });
+
+        function setupEventListeners() {
+            // Real-time validation
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => clearError(input));
+            });
+
+            // Form submission
+            document.getElementById('multiStepForm').addEventListener('submit', handleSubmit);
+        }
+
+        function setupSkillSelection() {
+            const skillTags = document.querySelectorAll('.skill-tag');
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const skill = this.getAttribute('data-skill');
+                    
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedSkills = selectedSkills.filter(s => s !== skill);
+                    } else {
+                        this.classList.add('selected');
+                        selectedSkills.push(skill);
+                    }
+                    
+                    document.getElementById('selectedSkills').value = selectedSkills.join(',');
+                    clearError(document.getElementById('selectedSkills'));
+                });
+            });
+        }
+
+        function setupFileUploads() {
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const label = this.parentElement.querySelector('.file-upload-label');
+                    const span = label.querySelector('span');
+                    
+                    if (this.files.length > 0) {
+                        label.classList.add('has-file');
+                        if (this.files.length === 1) {
+                            span.textContent = this.files[0].name;
+                        } else {
+                            span.textContent = `${this.files.length} files selected`;
+                        }
+                    } else {
+                        label.classList.remove('has-file');
+                        span.textContent = label.getAttribute('data-original-text') || 'Click to upload';
+                    }
+                    
+                    clearError(this);
+                });
+            });
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldName = field.name;
+            let isValid = true;
+            let errorMessage = '';
+
+            // Clear previous error state
+            clearError(field);
+
+            // Required field validation
+            if (field.hasAttribute('required') && !value) {
+                isValid = false;
+                errorMessage = 'This field is required';
+            }
+
+            // Specific field validations
+            switch (fieldName) {
+                case 'firstName':
+                case 'lastName':
+                    if (value && !/^[a-zA-Z\s]+$/.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid name (letters only)';
+                    }
+                    break;
+                
+                case 'email':
+                    if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid email address';
+                    }
+                    break;
+                
+                case 'phone':
+                    if (value && !/^[\+]?[1-9][\d]{0,15}$/.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid phone number';
+                    }
+                    break;
+                
+                case 'portfolioUrl':
+                case 'linkedinUrl':
+                    if (value && !/^https?:\/\/.+/.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid URL (starting with http:// or https://)';
+                    }
+                    break;
+                
+                case 'selectedSkills':
+                    if (selectedSkills.length === 0) {
+                        isValid = false;
+                        errorMessage = 'Please select at least one skill';
+                    }
+                    break;
+                
+                case 'resume':
+                    if (field.hasAttribute('required') && field.files.length === 0) {
+                        isValid = false;
+                        errorMessage = 'Please upload your resume';
+                    }
+                    break;
+                
+                case 'agreeTerms':
+                    if (field.hasAttribute('required') && !field.checked) {
+                        isValid = false;
+                        errorMessage = 'You must agree to the terms and conditions';
+                    }
+                    break;
+            }
+
+            if (!isValid) {
+                showError(field, errorMessage);
+            } else {
+                showSuccess(field);
+            }
+
+            return isValid;
+        }
+
+        function showError(field, message) {
+            field.classList.add('input-error');
+            field.classList.remove('input-success');
+            const errorElement = document.getElementById(field.name + '-error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
+        }
+
+        function showSuccess(field) {
+            field.classList.add('input-success');
+            field.classList.remove('input-error');
+        }
+
+        function clearError(field) {
+            field.classList.remove('input-error');
+            const errorElement = document.getElementById(field.name + '-error');
+            if (errorElement) {
+                errorElement.classList.remove('show');
+            }
+        }
+
+        function validateStep(step) {
+            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                saveStepData();
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                    updateProgressBar();
+                } else {
+                    updateReviewSection();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                updateProgressBar();
+            }
+        }
+
+        function goToStep(step) {
+            if (step >= 1 && step <= totalSteps) {
+                currentStep = step;
+                showStep(currentStep);
+                updateProgressBar();
+            }
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(stepElement => {
+                stepElement.classList.remove('active');
+            });
+
+            // Show current step
+            document.querySelector(`[data-step="${step}"]`).classList.add('active');
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.style.display = step === 1 ? 'none' : 'inline-flex';
+            
+            if (step === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function updateProgressBar() {
+            // Update step indicators
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const stepNumber = index + 1;
+                const circle = step.querySelector('.step-circle');
+                const title = step.querySelector('.step-title');
+                const line = step.querySelector('.progress-line');
+
+                if (stepNumber < currentStep) {
+                    circle.classList.add('completed');
+                    circle.classList.remove('active');
+                    circle.innerHTML = '<i class="fas fa-check"></i>';
+                    title.classList.remove('active');
+                    if (line) line.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    circle.classList.add('active');
+                    circle.classList.remove('completed');
+                    circle.textContent = stepNumber;
+                    title.classList.add('active');
+                    if (line) line.classList.remove('completed');
+                } else {
+                    circle.classList.remove('active', 'completed');
+                    circle.textContent = stepNumber;
+                    title.classList.remove('active');
+                    if (line) line.classList.remove('completed');
+                }
+            });
+
+            // Update overall progress
+            const progressPercentage = (currentStep / totalSteps) * 100;
+            document.querySelector('.overall-progress-fill').style.width = progressPercentage + '%';
+        }
+
+        function saveStepData() {
+            const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+            const inputs = currentStepElement.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formData[input.name] = input.checked;
+                } else if (input.type === 'file') {
+                    formData[input.name] = input.files;
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+        }
+
+        function updateReviewSection() {
+            // Personal Information
+            document.getElementById('review-name').textContent = `${formData.firstName || ''} ${formData.lastName || ''}`;
+            document.getElementById('review-email').textContent = formData.email || '';
+            document.getElementById('review-phone').textContent = formData.phone || '';
+            document.getElementById('review-location').textContent = `${formData.city || ''}, ${formData.country || ''}`;
+
+            // Professional Details
+            document.getElementById('review-experience').textContent = getSelectOptionText('experienceLevel', formData.experienceLevel);
+            document.getElementById('review-role').textContent = getSelectOptionText('preferredRole', formData.preferredRole);
+            document.getElementById('review-position').textContent = formData.currentPosition || 'Not specified';
+            document.getElementById('review-availability').textContent = getSelectOptionText('availability', formData.availability);
+
+            // Skills & Experience
+            document.getElementById('review-skills').textContent = selectedSkills.join(', ') || 'None selected';
+            document.getElementById('review-portfolio').textContent = formData.portfolioUrl || 'Not provided';
+
+            // Documents
+            document.getElementById('review-resume').textContent = formData.resume && formData.resume.length > 0 ? formData.resume[0].name : 'Not uploaded';
+            document.getElementById('review-cover-letter').textContent = formData.coverLetter && formData.coverLetter.length > 0 ? formData.coverLetter[0].name : 'Not uploaded';
+        }
+
+        function getSelectOptionText(selectId, value) {
+            const select = document.getElementById(selectId);
+            const option = select.querySelector(`option[value="${value}"]`);
+            return option ? option.textContent : value;
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (validateStep(currentStep)) {
+                saveStepData();
+                submitApplication();
+            }
+        }
+
+        function submitApplication() {
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                // Generate application ID
+                const applicationId = 'META-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                const submissionDate = new Date().toLocaleString();
+
+                // Show success page
+                document.getElementById('applicationId').textContent = applicationId;
+                document.getElementById('submissionDate').textContent = submissionDate;
+
+                // Hide navigation
+                document.querySelector('.form-navigation').style.display = 'none';
+
+                // Show success step
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.classList.remove('active');
+                });
+                document.querySelector('[data-step="success"]').classList.add('active');
+
+                // Update progress bar to show completion
+                document.querySelectorAll('.step-circle').forEach(circle => {
+                    circle.classList.add('completed');
+                    circle.classList.remove('active');
+                    circle.innerHTML = '<i class="fas fa-check"></i>';
+                });
+                document.querySelector('.overall-progress-fill').style.width = '100%';
+
+                // Store application data (in a real app, this would be sent to a server)
+                console.log('Application submitted:', formData);
+                
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        }
+
+        // Add some nice keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextStep();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        previousStep();
+                        break;
+                }
+            }
+        });
+
+        // Auto-save functionality
+        setInterval(() => {
+            saveStepData();
+            // In a real application, you would send this to localStorage or a server
+            console.log('Auto-saved:', formData);
+        }, 30000); // Auto-save every 30 seconds
+    </script>
+</body>
+</html>Edit</button>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Email:</span>
+                            <span class="review-value" id="review-email"></span>
+                            <button type="button" class="edit-btn" onclick="goToStep(1)">
